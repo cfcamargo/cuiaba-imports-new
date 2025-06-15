@@ -14,12 +14,11 @@ import { useEffect } from "react";
 import { fetchUniqueCategories } from "@/lib/fetchProducts";
 import { productApi } from "@/lib/productApi";
 import { useProductStore } from "@/store/products/products";
+import SearchBar from "./search-bar";
 
 export default function CategoriesMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const pathname = usePathname();
-
-  const [loadingCategorie, setLoadingCategorie] = React.useState(true);
 
   const { setMeta, setLoading, setProducts } = useProductStore();
   const route = useRouter();
@@ -37,9 +36,10 @@ export default function CategoriesMenu() {
   const categoriesStore = useCategoriesStore();
 
   const getCategories = async () => {
+    categoriesStore.setLoading(true);
     const response = await fetchUniqueCategories();
     categoriesStore.setCategories(response);
-    setLoadingCategorie(false);
+    categoriesStore.setLoading(false);
   };
 
   const getProductByCategorie = async (categorie: string) => {
@@ -69,75 +69,81 @@ export default function CategoriesMenu() {
   }, []);
 
   return (
-    <nav className="flex items-center gap-16 justify-center relative">
-      <div>
-        <Button
-          id="basic-button"
-          aria-controls={open ? "basic-menu" : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? "true" : undefined}
-          onClick={handleClick}
-          sx={{
-            color: "black",
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-            minWidth: "150px",
-            minHeight: "37px",
-          }}
-        >
-          {loadingCategorie ? (
-            <CircularProgress size={16} />
-          ) : (
-            <>
-              <AlignJustify />
-              <span>Categorias</span>
-            </>
-          )}
-        </Button>
-        {!loadingCategorie && (
-          <Menu
-            id="basic-menu"
-            className="absolute"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={() => setAnchorEl(null)}
+    <>
+      <nav className="xs:hidden md:flex items-center gap-16 justify-center relative">
+        <div>
+          <Button
+            id="basic-button"
+            aria-controls={open ? "basic-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? "true" : undefined}
+            onClick={handleClick}
             sx={{
-              top: "8px",
-              width: "100%",
-              maxWidth: "1200px",
-            }}
-            slotProps={{
-              list: {
-                "aria-labelledby": "basic-button",
-              },
+              color: "black",
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              minWidth: "150px",
+              minHeight: "37px",
             }}
           >
-            <Grid container spacing={1}>
-              {categoriesStore.categories.map((categorie, i) => (
-                <Grid size={4} key={i}>
-                  <MenuItem onClick={() => getProductByCategorie(categorie)}>
-                    {categorie}
-                  </MenuItem>
-                </Grid>
-              ))}
-            </Grid>
-          </Menu>
-        )}
-      </div>
+            {categoriesStore.loading ? (
+              <CircularProgress size={16} />
+            ) : (
+              <>
+                <AlignJustify />
+                <span>Categorias</span>
+              </>
+            )}
+          </Button>
+          {!categoriesStore.loading && (
+            <Menu
+              id="basic-menu"
+              className="absolute"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={() => setAnchorEl(null)}
+              sx={{
+                top: "8px",
+                width: "100%",
+                maxWidth: "1200px",
+              }}
+              slotProps={{
+                list: {
+                  "aria-labelledby": "basic-button",
+                },
+              }}
+            >
+              <Grid container spacing={1}>
+                {categoriesStore.categories.map((categorie, i) => (
+                  <Grid size={4} key={i}>
+                    <MenuItem onClick={() => getProductByCategorie(categorie)}>
+                      {categorie}
+                    </MenuItem>
+                  </Grid>
+                ))}
+              </Grid>
+            </Menu>
+          )}
+        </div>
 
-      <Link className={navLinkClass("/")} href="/">
-        HOME
-      </Link>
-      <Link className={navLinkClass("/shop")} href="/shop">
-        LOJA
-      </Link>
-      <Link className={navLinkClass("/assistance")} href="/assistance">
-        ASSISTÊNCIA TÉCNICA
-      </Link>
-      <Link className={navLinkClass("/about")} href="/about">
-        SOBRE
-      </Link>
-    </nav>
+        <Link className={navLinkClass("/")} href="/">
+          HOME
+        </Link>
+        <Link className={navLinkClass("/shop")} href="/shop">
+          LOJA
+        </Link>
+        <Link className={navLinkClass("/assistance")} href="/assistance">
+          ASSISTÊNCIA TÉCNICA
+        </Link>
+        <Link className={navLinkClass("/about")} href="/about">
+          SOBRE
+        </Link>
+      </nav>
+
+      <div className="xs:flex md:hidden">
+        <SearchBar />
+      </div>
+    </>
   );
 }
