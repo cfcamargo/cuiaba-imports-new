@@ -46,12 +46,14 @@ export async function fetchUniqueCategories(): Promise<string[]> {
     if (!isHeader && isActive) {
       const category = product[6]?.trim();
       if (category) {
-        categoriesSet.add(category);
+        categoriesSet.add(
+          category.charAt(0).toUpperCase() + category.slice(1).toLowerCase()
+        );
       }
     }
   });
 
-  return Array.from(categoriesSet);
+  return Array.from(categoriesSet).sort();
 }
 
 export async function fetchUniqueBrand(): Promise<string[]> {
@@ -66,10 +68,12 @@ export async function fetchUniqueBrand(): Promise<string[]> {
     if (!isHeader && isActive) {
       const brand = product[5]?.trim();
       if (brand) {
-        brandSet.add(brand);
+        brandSet.add(
+          brand.charAt(0).toUpperCase() + brand.slice(1).toLowerCase()
+        );
       }
     }
   });
 
-  return Array.from(brandSet);
+  return Array.from(brandSet).sort();
 }

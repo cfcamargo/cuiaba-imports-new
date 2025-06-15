@@ -1,9 +1,13 @@
 import { Grid, Skeleton } from "@mui/material";
 
-export default function GridSkeleton() {
+interface GridSkeletonProps {
+  readonly perPage?: number;
+}
+
+export default function GridSkeleton({ perPage = 20 }: GridSkeletonProps) {
   return (
     <Grid container spacing={2}>
-      {[...Array(20)].map((_, index) => (
+      {[...Array(perPage)].map((_, index) => (
         <Grid
           size={{ xs: 12, sm: 6, md: 6, lg: 3 }}
           key={index}

@@ -5,28 +5,29 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { AlignJustify } from "lucide-react";
 import clsx from "clsx";
 import { CircularProgress, Grid } from "@mui/material";
 import { useCategoriesStore } from "@/store/products/categories";
 import { useEffect } from "react";
 import { fetchUniqueCategories } from "@/lib/fetchProducts";
+import { productApi } from "@/lib/productApi";
+import { useProductStore } from "@/store/products/products";
 
 export default function CategoriesMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const pathname = usePathname();
 
-  const [loading, setLoading] = React.useState(true);
+  const [loadingCategorie, setLoadingCategorie] = React.useState(true);
+
+  const { setMeta, setLoading, setProducts } = useProductStore();
+  const route = useRouter();
 
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleSearchByFilter = () => {
-    setAnchorEl(null);
-  };
-
   const navLinkClass = (href: string) =>
     clsx(
       "text-black border-b border-transparent hover:border-zinc-950 transition-all duration-200",
@@ -34,10 +35,33 @@ export default function CategoriesMenu() {
     );
 
   const categoriesStore = useCategoriesStore();
+
   const getCategories = async () => {
     const response = await fetchUniqueCategories();
     categoriesStore.setCategories(response);
-    setLoading(false);
+    setLoadingCategorie(false);
+  };
+
+  const getProductByCategorie = async (categorie: string) => {
+    setAnchorEl(null);
+
+    if (pathname === "/shop") {
+      const query = new URLSearchParams({
+        categorie,
+      });
+
+      setLoading(true);
+      const { data } = await productApi.getPaginatedProducts(query.toString());
+      setProducts(data.products);
+      setMeta({
+        links: data.links,
+        total: data.total,
+        page: data.page,
+        perPage: data.perPage,
+      });
+      setLoading(false);
+    }
+    route.push(`/shop/?categorie=${categorie}`);
   };
 
   useEffect(() => {
@@ -62,7 +86,7 @@ export default function CategoriesMenu() {
             minHeight: "37px",
           }}
         >
-          {loading ? (
+          {loadingCategorie ? (
             <CircularProgress size={16} />
           ) : (
             <>
@@ -71,7 +95,7 @@ export default function CategoriesMenu() {
             </>
           )}
         </Button>
-        {!loading && (
+        {!loadingCategorie && (
           <Menu
             id="basic-menu"
             className="absolute"
@@ -92,7 +116,7 @@ export default function CategoriesMenu() {
             <Grid container spacing={1}>
               {categoriesStore.categories.map((categorie, i) => (
                 <Grid size={4} key={i}>
-                  <MenuItem onClick={handleSearchByFilter}>
+                  <MenuItem onClick={() => getProductByCategorie(categorie)}>
                     {categorie}
                   </MenuItem>
                 </Grid>
@@ -103,6 +127,9 @@ export default function CategoriesMenu() {
       </div>
 
       <Link className={navLinkClass("/")} href="/">
+        HOME
+      </Link>
+      <Link className={navLinkClass("/shop")} href="/shop">
         LOJA
       </Link>
       <Link className={navLinkClass("/assistance")} href="/assistance">
@@ -110,9 +137,6 @@ export default function CategoriesMenu() {
       </Link>
       <Link className={navLinkClass("/about")} href="/about">
         SOBRE
-      </Link>
-      <Link className={navLinkClass("/contact")} href="/contact">
-        CONTATO
       </Link>
     </nav>
   );

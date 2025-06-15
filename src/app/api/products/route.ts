@@ -5,11 +5,11 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
 
-    const perPage = Number(searchParams.get("perPage") || "15");
+    const perPage = Number(searchParams.get("perPage") || "20");
     const page = Number(searchParams.get("page") || "1");
     const title = searchParams.get("title")?.toLowerCase() || "";
     const brand = searchParams.get("brand")?.toLowerCase() || "";
-    const category = searchParams.get("category")?.toLowerCase() || "";
+    const category = searchParams.get("categorie")?.toLowerCase() || "";
 
     let products = await fetchAndTransformProducts();
 
@@ -38,9 +38,6 @@ export async function GET(req: NextRequest) {
       page,
     });
   } catch (error) {
-    return NextResponse.json(
-      { error: "Erro ao buscar os produtos" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error }, { status: 500 });
   }
 }
