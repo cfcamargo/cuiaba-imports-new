@@ -1,3 +1,5 @@
+"use client";
+
 import { ToggleButton, ToggleButtonGroup, Tooltip } from "@mui/material";
 import { LayoutGrid, LayoutList } from "lucide-react";
 import React from "react";

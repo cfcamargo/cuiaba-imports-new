@@ -1,4 +1,5 @@
 "use client";
+
 import { Box, Typography } from "@mui/material";
 import { useParams } from "next/navigation";
 import ToggleVersions from "./components/toggle-version";

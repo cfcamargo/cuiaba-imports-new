@@ -1,7 +1,6 @@
 import { ProductProps } from "@/types/Product";
 import { Button, Card, CardContent, Typography } from "@mui/material";
 import { MessageCircle } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 interface ListProductCardPros {

@@ -1,4 +1,5 @@
 "use client";
+
 import { Box, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import ProductCard from "./product-card";

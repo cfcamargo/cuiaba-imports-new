@@ -1,9 +1,15 @@
 import { fetchAndTransformProducts } from "@/lib/fetchProducts";
 import { NextResponse } from "next/server";
 
-export async function GET(_: Request, { params }: { params: { id: string } }) {
+type RouteContext = {
+  params: {
+    id: string;
+  };
+};
+
+export async function GET(request: Request, context: any) {
   try {
-    const id = Number(params.id);
+    const id = Number(context.params.id);
     const products = await fetchAndTransformProducts();
     const product = products.find((p) => p.id === id);
 

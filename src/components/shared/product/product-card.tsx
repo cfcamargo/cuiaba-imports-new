@@ -1,6 +1,5 @@
 import { ProductProps } from "@/types/Product";
 import { Card, CardContent, Typography } from "@mui/material";
-import Image from "next/image";
 import Link from "next/link";
 
 interface ProductCardPros {
