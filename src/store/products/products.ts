@@ -2,7 +2,7 @@ import { MetaProps } from "@/types/Meta";
 import { ProductProps } from "@/types/Product";
 import { create } from "zustand";
 
-interface BrandsStore {
+interface ProductsStoreProps {
   products: ProductProps[];
   meta: MetaProps;
   setProducts: (products: ProductProps[]) => void;
@@ -18,7 +18,7 @@ const initialMeta: MetaProps = {
   links: 0,
 };
 
-export const useProductStore = create<BrandsStore>((set) => ({
+export const useProductStore = create<ProductsStoreProps>((set) => ({
   products: [],
   meta: initialMeta,
   loading: false,

@@ -114,7 +114,7 @@ export default function CategoriesMenu() {
                 },
               }}
             >
-              <Grid container spacing={1}>
+              <Grid container spacing={1} width={800}>
                 {categoriesStore.categories.map((categorie, i) => (
                   <Grid size={4} key={i}>
                     <MenuItem onClick={() => getProductByCategorie(categorie)}>

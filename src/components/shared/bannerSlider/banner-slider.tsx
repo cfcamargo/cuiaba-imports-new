@@ -6,8 +6,25 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { useState } from "react";
 
 export default function BannerSlider() {
+  const [useMobile, setUseMobile] = useState(true);
+
+  const slides = [
+    "/banners/iphone.png",
+    "/banners/alexa.png",
+    "/banners/perfumes.png",
+    "/banners/starlink.png",
+  ];
+
+  const slidesMobile = [
+    "/banners/m-iphone.png",
+    "/banners/m-alexa.png",
+    "/banners/m-perfumes.png",
+    "/banners/m-starlink.png",
+  ];
+
   return (
     <Swiper
       modules={[Navigation]}
@@ -19,10 +36,13 @@ export default function BannerSlider() {
       className="h-[400px]"
       navigation
     >
-      <SwiperSlide className="h-[400px] bg-white">Slide 1</SwiperSlide>
-      <SwiperSlide className="h-[400px] bg-white">Slide 2</SwiperSlide>
-      <SwiperSlide className="h-[400px] bg-white">Slide 3</SwiperSlide>
-      <SwiperSlide className="h-[400px] bg-white">Slide 4</SwiperSlide>
+      {slides.map((element, index) => {
+        return (
+          <SwiperSlide className="h-[400px] bg-white" key={index}>
+            <img src={element} className="h-full w-full object-cover" />
+          </SwiperSlide>
+        );
+      })}
     </Swiper>
   );
 }
