@@ -1,4 +1,4 @@
-import { Grid, Skeleton } from "@mui/material";
+import { Grid2 as Grid, Skeleton } from "@mui/material";
 
 interface GridSkeletonProps {
   readonly perPage?: number;

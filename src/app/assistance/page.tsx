@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid2 as Grid, Typography } from "@mui/material";
 import { MessageCircle } from "lucide-react";
 import Image from "next/image";
 

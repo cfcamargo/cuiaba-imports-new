@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid2 as Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import ProductCard from "./product-card";
 import Filters from "./filter";
@@ -112,9 +112,8 @@ export default function ProductsGrid({
       {!loading && products.length === 0 && <EmptyResult />}
       {meta && (
         <div className="flex xs:flex-col justify-between items-center pt-4">
-          <span className="text-zinc-950">{`Mostrando ${
-            meta?.page * meta?.perPage - meta?.perPage
-          } a ${meta?.page * meta?.perPage} de ${meta?.total} produtos`}</span>
+          <span className="text-zinc-950">{`Mostrando ${meta?.page * meta?.perPage - meta?.perPage
+            } a ${meta?.page * meta?.perPage} de ${meta?.total} produtos`}</span>
           <Paginator
             handleBackFirstPage={() => getProducts(1)}
             handleBackPage={handleBackPage}

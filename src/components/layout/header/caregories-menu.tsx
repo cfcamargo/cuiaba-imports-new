@@ -8,7 +8,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { AlignJustify } from "lucide-react";
 import clsx from "clsx";
-import { CircularProgress, Grid } from "@mui/material";
+import { CircularProgress, Grid2 as Grid } from "@mui/material";
 import { useCategoriesStore } from "@/store/products/categories";
 import { useEffect } from "react";
 import { fetchUniqueCategories } from "@/lib/fetchProducts";
